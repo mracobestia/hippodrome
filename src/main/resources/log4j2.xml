@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Appenders>
+        <!-- Каждый день создается новый файл согласно filePattern -->
+        <RollingFile name="rollingFile"
+                     fileName="logs/hippodrome.log"
+                     filePattern="logs/hippodrome.%d{yyyy-MM-dd}.log"
+                     ignoreExceptions="false">
+            <PatternLayout>
+                <!-- %d - дата
+                 %-5p - уровень, с выравниваем на 5 символов
+                 %c - класс
+                  %m - сообщение
+                  %n - новая строка -->
+                <Pattern>%d %-5p %c: %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval = "1" />
+            </Policies>
+            <!-- Delete all files older than 7 days -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="logs" maxDepth = "2">
+                    <IfFileName glob="hippodrome.*.log" />
+                    <IfLastModified age="7d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="all">
+            <AppenderRef ref="rollingFile" />
+        </Root>
+    </Loggers>
+
+</Configuration>
